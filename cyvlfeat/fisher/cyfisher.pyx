@@ -62,21 +62,4 @@ cpdef cy_fisher(float[:, :] X,
     cdef float[:] enc = np.zeros(2 * n_clusters * n_dimensions,
                                  dtype=np.float32)
 
-    cdef int num_terms = vl_fisher_encode(&enc[0],
-                                          VL_TYPE_FLOAT,
-                                          &MEANS[0, 0],
-                                          n_dimensions,
-                                          n_clusters,
-                                          &COVARIANCES[0, 0],
-                                          &PRIORS[0],
-                                          &X[0, 0],
-                                          n_data,
-                                          flags)
 
-    if verbose:
-        print('vl_fisher: sparsity of assignments: {:.2f}% '
-              '({} non-negligible assignments)'.format(
-            100.0 * (1.0 - <float>num_terms / (n_data * n_clusters + 1e-12)),
-            num_terms))
-
-    return np.asarray(enc)
